@@ -93,11 +93,12 @@ public class Main {
             B = tmp.bronze;
             if(G == start.gold && S == start.silver && B == start.bronze) {
                 tmpRank++;
-                tmp.rank = nationList.get(i-1).rank;
             } else {
                 tmp.rank += 1 + tmpRank;
                 tmpRank = 0;
+                continue;
             }
+            tmpRank = 0;
         }
 
         for (int i = 0; i < nationList.size(); i++) {
