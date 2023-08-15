@@ -96,7 +96,9 @@ public class Main {
             } else {
                 tmp.rank += 1 + tmpRank;
                 tmpRank = 0;
+                continue;
             }
+            tmpRank = 0;
         }
 
         for (int i = 0; i < nationList.size(); i++) {
