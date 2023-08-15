@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 시작 시간: 1:08
@@ -27,16 +29,24 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int[] arr = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
+//        int[] arr = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
+        // 문자열 값을 정수형 ArrayList로 간단히 만드는 방법
+        int N = Integer.parseInt(br.readLine());
+        List<Integer> arr = new ArrayList<>();
+        while(N > 0) {
+            arr.add(N % 10);
+            N /= 10;
+        }
+
         int start = 0;
-        int end = arr.length - 1;
+        int end = arr.size() - 1;
 
         int sumL = 0;
         int sumR = 0;
         // 투포인터 - start의 인덱스가 end의 인덱스ㄴ보다 작을 때까지
         while(start < end) {
-            sumL += arr[start];
-            sumR += arr[end];
+            sumL += arr.get(start);
+            sumR += arr.get(end);
             start++;
             end--;
         }
