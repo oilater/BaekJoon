@@ -6,25 +6,25 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 /**
- * 수빈이가 동생에게 이동할 수 있는 모든 경우의 수 구하기
+ * 수빈이 현재점 N, 동생은 K
+ * 수빈이 걷거나 순간이동 가능
+ * X일 때 걷는다면 1초후에 X-1 또는 X+1 이동
+ * 순간이동하면 1초 후 2*X로 이동
+ * 동생을 찾을 수 있는 가장 빠른 시간은 몇 초 후?
  *
- * 수빈 < 동생
- * - 2*X  X+1   X-1 로 이동해보기
+ * 입력
+ * 수빈이의 위치 N과 동생의 위치 K
  *
- * 수빈 > 동생
- * - X-1 로 이동
- * 이 때 갈 수 있는 방법이 한 가지 뿐이므로
- * 수빈 - 동생 만큼 이동하기
- *
- * 수빈 == 동생
- * 현재까지 이동시간이 최소 시간이라면 저장
+ * 생각나는 풀이
+ * BFS => X => X-1, X+1, 2 * X => 세 점에서 또 각자 타고 들어가기
+ * N >= K 이면 시간은 N-K 초 => 출력하고 리턴
+ * 아니라면 bfs 호출
  */
 public class Main {
-    final static int MAX = 100001;
+    static final int MAX = 100001;
+    static int N, K;
 
-    static int N; // 수빈이 위치
-    static int K; // 동생 위치
-
+    static boolean[] visited = new boolean[MAX];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -32,54 +32,50 @@ public class Main {
         K = Integer.parseInt(st.nextToken());
 
         if(N >= K) {
-            System.out.println(N - K);
+            System.out.println(N-K);
             return;
         }
 
-        bfs();
+        bfs(N); // 5
     }
-
-    private static void bfs() {
+    private static void bfs(int x) {
         Queue<Integer> q = new ArrayDeque<>();
-        boolean[] visited = new boolean[MAX];
-
-        q.offer(N);
-        visited[N] = true;
-
-        int time = 0; // 현재까지 걸린 시간
-        while(!q.isEmpty()) {
+        q.offer(x); // 5
+        visited[x] = true; // 방문 체크
+        int time = 0; // 시간 계산
+        while (!q.isEmpty()) {
             int size = q.size();
-            while (size-- > 0) {
-                int curX = q.poll(); // 현재 위치
+            while(size-- > 0) {
+                int now = q.poll(); // 꺼내기
 
-
-                // 처음 K에 도달한 경우 지금까지의 시간이 최소시간이므로 출력 후 종료
-                if (curX == K) {
+                if (now == K) {
                     System.out.println(time);
                     return;
                 }
 
-                //2 * X
-                int num1 = 2 * curX;
-                if (num1 < MAX && !visited[num1]) {
-                    q.offer(num1);
-                    visited[num1] = true;
+                int s1 = now - 1;
+                if (s1 >= 0 && !visited[s1]) {
+                    q.offer(s1);
+                    visited[s1] = true;
                 }
 
-                // X + 1
-                int num2 = curX + 1;
-                if (num2 < MAX && !visited[num2]) {
-                    q.offer(num2);
-                    visited[num2] = true;
+
+                int s2 = now + 1;
+                if (s2 < MAX && !visited[s2]) {
+                    q.offer(s2);
+                    visited[s2] = true;
                 }
 
-                int num3 = curX - 1;
-                if (num3 >= 0 && !visited[num3]) {
-                    q.offer(num3);
-                    visited[num3] = true;
+                int s3 = now * 2;
+                if (s3 < MAX && !visited[s3]) {
+                    q.offer(s3);
+                    visited[s3] = true;
                 }
+
             }
             time++;
         }
     }
+
+
 }
