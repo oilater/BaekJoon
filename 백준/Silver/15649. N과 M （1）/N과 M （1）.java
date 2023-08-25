@@ -1,52 +1,48 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int[] picked;
-	static int[] arr;
-	static boolean[] isSelected;
-	static int N;
-	static int M;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+    static StringBuilder sb;
+    static int N, M;
+    static int[] arr;
+    static boolean[] visited;
+    static int[] picked;
+    public static void main(String[] args) throws IOException {
+        sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        arr = new int[N];
+        picked = new int[N];
+        visited = new boolean[N];
 
-		isSelected = new boolean[N + 1];
-		arr = new int[N + 1];
-		picked = new int[M];
-		for (int i = 1; i <= N; i++) {
-			arr[i] = i;
-		}
-		permutation(0);
-	}
+        for (int i = 0; i < N; i++) {
+            arr[i] = i + 1;
+        }
 
-	// idx 는 순서이면서 뽑는 개수
-	static void permutation(int idx) {
+        permutation(0);
+        System.out.println(sb);
+    }
 
-		if (idx == M) {
-			StringBuilder sb = new StringBuilder();
-			for (int i : picked) {
-				sb.append(i).append(" ");
-			}
-			System.out.println(sb.toString());
-			return;
-		}
+    private static void permutation(int cnt) {
+        if (cnt == M ) {
+            for (int i = 0; i < M; i++) {
+                sb.append(picked[i]).append(' ');
+            }
+            sb.append('\n');
+            return;
+        }
 
-		for (int i = 1; i <= N; i++) {
-			if (isSelected[i])
-				continue;
-
-			picked[idx] = arr[i];
-			isSelected[i] = true;
-			permutation(idx + 1);
-			isSelected[i] = false;
-
-		}
-
-	}
+        for (int i = 0; i < N; i++) {
+            if(!visited[i]) {
+                visited[i] = true;
+                picked[cnt] = arr[i];
+                permutation(cnt + 1);
+                visited[i] = false;
+            }
+        }
+    }
 }
