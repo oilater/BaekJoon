@@ -1,46 +1,58 @@
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Solution {
-	static int test_case;
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		int[] arr = new int[100];
-		// 테스트 케이스
-		for (test_case = 1; test_case <= 10; test_case++) {
 
-			st = new StringTokenizer(br.readLine());
-			// 덤프 값
-			int dump = Integer.parseInt(st.nextToken());
-			// 값 채우기
-			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < 100; i++) {
-				arr[i] = Integer.parseInt(st.nextToken());
-			}
+    static int[] arr = new int[100];
+    static int N;
 
-			// 재귀
-			recursive(dump, arr);
+    static int maxIdx() {
+        int max = 0;
+        int maxIdx = 0;
+        for (int i = 0; i < 100; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
+                maxIdx = i;
+            }
+        }
+        return maxIdx;
+    }
 
-		}
-	}
+    static int minIdx() {
+        int min = 101;
+        int minIdx = 0;
+        for (int i = 0; i < 100; i++) {
+            if (min > arr[i]) {
+                min = arr[i];
+                minIdx = i;
+            }
+        }
+        return minIdx;
+    }
 
-	public static void recursive(int dump, int[] arr) {
-		if (dump == 0) {
-			System.out.printf("#%d %d%n", test_case, arr[99] - arr[0]);
-			return;
-		}
+    static int Flatten() {
+        for (int i = 0; i < N; i++) {
+            arr[maxIdx()] -= 1; // 최고점 1 감소
+            arr[minIdx()] += 1; // 최저점 1 증가
+        }
+        return arr[maxIdx()] - arr[minIdx()];
+    }
 
-		Arrays.sort(arr);
-		arr[99] -= 1;
-		arr[0] += 1;
-		Arrays.sort(arr);
-		recursive(dump - 1, arr);
+    public static void main(String[] args) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        for (int tc = 1; tc <= 10; tc++) {
+            N = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
 
-	}
-}
+            for (int i = 0; i < 100; i++) {
+                arr[i] = Integer.parseInt(st.nextToken());
+            }
+            sb.append("#").append(tc).append(' ').append(Flatten()).append('\n');
+        }
+        System.out.println(sb);
+        }
+    }
