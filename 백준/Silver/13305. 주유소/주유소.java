@@ -49,9 +49,7 @@ public class Main {
         // 다음 주유소 가격이 현재보다 비싸다면 현재 금액으로 충전할 거리 누적
         // 근데 일단 2번 도시까진 가고 시작.
 
-        int moneySum = distances[0] * oilCosts[0];
-        int distanceSum = 0;
-        int curOilMoney= Integer.MAX_VALUE;
+        long moneySum = distances[0] * oilCosts[0];
         for (int i = 1; i < N-1; i++) {
             if (oilCosts[i] >= oilCosts[i+1]) { // 현재 주유비가 다음 주유소의 주유비보다 비싸다면
                 moneySum += oilCosts[i] * distances[i];
