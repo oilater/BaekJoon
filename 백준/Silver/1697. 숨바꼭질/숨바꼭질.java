@@ -6,76 +6,74 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 /**
- * 수빈이 현재점 N, 동생은 K
- * 수빈이 걷거나 순간이동 가능
- * X일 때 걷는다면 1초후에 X-1 또는 X+1 이동
- * 순간이동하면 1초 후 2*X로 이동
- * 동생을 찾을 수 있는 가장 빠른 시간은 몇 초 후?
+ * K 가 N과 이미 같다면 0 출력
+ * K 가 N보다 작다면 K-N 출력
+ * K가 N보다 큰 경우에 bfs를 돌리자
+ * dfs를 돌리기엔 시간이 너무 걸린다.
+ * 이동할 수 있는 세 가지 경로 N-1 N+1 2*N
+ * Q에 각각의 값을 넣어주고 그로 인해 파생되는 값들도 차례차례 넣어준다.
+ * depth 별로 탐색하고, 탐색할 때마다 1씩 증가시켜준다.
+ * N = K 가 될 때 bfs를 멈추고 depth를 출력한다.
  *
- * 입력
- * 수빈이의 위치 N과 동생의 위치 K
- *
- * 생각나는 풀이
- * BFS => X => X-1, X+1, 2 * X => 세 점에서 또 각자 타고 들어가기
- * N >= K 이면 시간은 N-K 초 => 출력하고 리턴
- * 아니라면 bfs 호출
  */
 public class Main {
-    static final int MAX = 100001;
     static int N, K;
-
-    static boolean[] visited = new boolean[MAX];
+    static final int MAX = 100001;
+    static int res;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-
-        if(N >= K) {
-            System.out.println(N-K);
+        // K가 N과 같거나, N보다 작은 경우
+        if (K <= N) {
+            System.out.println(N - K);
             return;
         }
 
-        bfs(N); // 5
+        // K가 N보다 크다면
+        bfs();
     }
-    private static void bfs(int x) {
-        Queue<Integer> q = new ArrayDeque<>();
-        q.offer(x); // 5
-        visited[x] = true; // 방문 체크
-        int time = 0; // 시간 계산
-        while (!q.isEmpty()) {
+
+    private static void bfs() {
+        Queue<Integer> q = new ArrayDeque<>(); // 큐 생성
+        boolean[] visited = new boolean[MAX];
+
+        q.offer(N);
+        visited[N] = true;
+
+        int time = 0;
+        while(!q.isEmpty()) {
             int size = q.size();
             while(size-- > 0) {
-                int now = q.poll(); // 꺼내기
+                int curX = q.poll();        // 현재 위치
 
-                if (now == K) {
+                // 종료조건
+                if (curX == K) {
                     System.out.println(time);
                     return;
                 }
 
-                int s1 = now - 1;
-                if (s1 >= 0 && !visited[s1]) {
-                    q.offer(s1);
-                    visited[s1] = true;
+                // 2 * X
+                int num1 = curX * 2;
+                if (num1 < MAX && !visited[num1]) {
+                    q.offer(num1);
+                    visited[num1] = true;
                 }
 
-
-                int s2 = now + 1;
-                if (s2 < MAX && !visited[s2]) {
-                    q.offer(s2);
-                    visited[s2] = true;
+                int num2 = curX + 1;
+                if (num2 < MAX && !visited[num2]) {
+                    q.offer(num2);
+                    visited[num2] = true;
                 }
 
-                int s3 = now * 2;
-                if (s3 < MAX && !visited[s3]) {
-                    q.offer(s3);
-                    visited[s3] = true;
+                int num3 = curX - 1;
+                if (num3 >= 0 && !visited[num3]) {
+                    q.offer(num3);
+                    visited[num3] = true;
                 }
-
             }
             time++;
         }
     }
-
-
 }
