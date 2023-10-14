@@ -20,7 +20,7 @@ public class Main {
         N = Integer.parseInt(br.readLine());
 
         int cnt = 0;
-        while (cnt <= 150) {
+        while (cnt <= 149) {
             cnt++;
             // 뻔 데기 뻔 데기
             for (int i = 0; i < 4; i++) {
@@ -37,6 +37,8 @@ public class Main {
             for (int i = 1; i <= cnt + 1; i++) {
                 list.add(1);
             }
+
+            if (list.size() >= 10000) break;
         }
 
         int tmpCnt = 0;
