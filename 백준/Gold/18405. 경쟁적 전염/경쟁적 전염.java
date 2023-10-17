@@ -106,18 +106,33 @@ public class Main {
 
             time++;
             if (time == S) return;
-
-
-            virusList.clear(); // 리스트 초기화
-            for (int i = 0; i < size; i++) {
-                virusList.add(que.poll()); // 리스트에 큐에 들어있는것 빼서 하나씩 넣기
-            }
-            Collections.sort(virusList, (a, b) -> a.type - b.type); // 리스트 정렬
-
-            for (int i = 0; i < virusList.size(); i++) {
-                que.add(virusList.get(i)); // 큐에 작은 바이러스부터 차례대로 추가
-            }
+            setQueue(size);
         }
     }
 
+    private static void setQueue(int size) {
+        virusList.clear(); // 리스트 초기화
+        for (int i = 0; i < size; i++) {
+            virusList.add(que.poll()); // 리스트에 큐에 들어있는것 빼서 하나씩 넣기
+        }
+        Collections.sort(virusList, (a, b) -> a.type - b.type); // 리스트 정렬
+        for (int i = 0; i < virusList.size(); i++) {
+            que.add(virusList.get(i)); // 큐에 작은 바이러스부터 차례대로 추가
+        }
+    }
 }
+
+
+/**
+ * 어려웠던 점
+ * 작은 바이러스부터 어떻게 돌게 할까 고민
+ * pq를 생각했지만 그렇게 되면 계속 1만 나옴
+ *
+ * 해결책) list를 만들어 sort한 후 다시 queue에 추가함
+ * 이 작업을 위에서 해야 하나 아래에서 해야 하나 고민됐음
+ *
+ * time == S 일때 정답을 출력하고 return 했더니
+ * 시간이 10인 경우, 그전에 큐가 먼저 다 빠져버려서 답이 안나오는 반레가 생김
+ * 0초는 따로 빼서 처리해야 하는걸까?
+ * setQueue 메서드로 빼면 size 전달해줘야 함?
+ */
