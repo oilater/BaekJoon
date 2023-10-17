@@ -6,8 +6,8 @@ import java.util.*;
 /**
  * 문제
  * 시작시간: 10:57
- * 종료시간:
- * 풀이시간:
+ * 종료시간: 12:10
+ * 풀이시간: 1h 13m
  *
  * 모든 바이ㅓ스는 1초마다 4방으로 퍼짐
  * 단, 번호가 낮은 종류의 바이러스부터 먼저 증식함
@@ -25,7 +25,8 @@ import java.util.*;
  *
  * 가장 번호가 낮은 것부터 어떻게 꺼낼까?
  * priority Queue 쓰면 되지 않을까?
- * 안됨 -> 작은것만 계속 뽑혀서 1로 도배됨
+ * ㄴ 안됨 -> 작은것만 계속 뽑혀서 1로 도배됨
+ * -> list를 이용해서 queue를 바이러스 type 크기 순으로 세팅해주자
  *
  */
 public class Main {
@@ -65,8 +66,7 @@ public class Main {
             }
         }
 
-        Collections.sort(virusList, (a, b) -> a.type - b.type); // 정렬
-
+        Collections.sort(virusList, (a, b) -> a.type - b.type); // 작은 바이러스 순으로 정렬
         for (int i = 0; i < virusList.size(); i++) {
             que.add(virusList.get(i)); // 작은 바이러스부터 큐에 추가
         }
@@ -76,7 +76,7 @@ public class Main {
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
 
-        if (S == 0) {
+        if (S == 0) { // S가 0이라면 bfs를 돌 필요가 없음
             System.out.println(map[R][C]);
             return;
         }
@@ -87,15 +87,13 @@ public class Main {
 
     private static void bfs() {
         int time = 0;
-        // 레벨 별 bfs
         while (!que.isEmpty()) {
             int size = que.size(); // 현재 큐의 사이즈
-
             while (size-- > 0) {
                 Virus virus = que.poll();
-                int r = virus.r; // 현재 바이러스의 행
-                int c = virus.c; // 현재 바이러스의 열
-                int type = virus.type; // 현재 바이러스의 종류
+                int r = virus.r; // 현재 바이러스 행
+                int c = virus.c; // 현재 바이러스 열
+                int type = virus.type; // 현재 바이러스 종류
 
                 for (int d = 0; d < 4; d++) {
                     int nr = r + dr[d];
@@ -107,9 +105,8 @@ public class Main {
             }
 
             time++;
-            if (time == S) {
-                return;
-            }
+            if (time == S) return;
+
 
             virusList.clear(); // 리스트 초기화
             for (int i = 0; i < size; i++) {
@@ -120,7 +117,7 @@ public class Main {
             for (int i = 0; i < virusList.size(); i++) {
                 que.add(virusList.get(i)); // 큐에 작은 바이러스부터 차례대로 추가
             }
-
         }
     }
+
 }
