@@ -1,7 +1,5 @@
 function solution(s) {
-    var answer = '';
+    const arr = s.split(' ');
     
-    const arr = s.split(' ').map(Number);
-    
-    return `${Math.min(...arr) + ' ' + Math.max(...arr)}`;
+    return `${Math.min(...arr)} ${Math.max(...arr)}`
 }
