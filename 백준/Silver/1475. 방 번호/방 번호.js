@@ -1,5 +1,5 @@
 const fs = require('fs');
-const inputs = fs.readFileSync(0).toString().trim().split('');
+const inputs = fs.readFileSync('/dev/stdin').toString().trim().split('');
 
 const arr = Array(10).fill(0);
 
